@@ -60,7 +60,7 @@ Use the built-in Banana Cake Pop IDE to verify real-time capabilities.
 
 Step 1: Initialize the Listener
 Open tab 1 and execute this Subscription. Leave it running to keep the WebSocket open.
-
+```
 subscription {
   onProductUpdated {
     id
@@ -68,16 +68,18 @@ subscription {
     price
   }
 }
+```
 
 Step 2: Trigger API ➔ DB Flow
 Open Tab 2 and execute a Mutation to insert a product. Observe Tab 1; the new product will be pushed instantly.
-
+```
 mutation {
   addProduct(name: "Mechanical Keyboard", price: 89.99) {
     id
     name
   }
 }
+```
 
 Step 3: Trigger DB ➔ API Flow
 Leave the Subscription running. Open SSMS and execute a direct SQL update:
@@ -85,5 +87,16 @@ Leave the Subscription running. Open SSMS and execute a direct SQL update:
 UPDATE [dbo].[Products] 
 SET Price = 75.00 
 WHERE Name = 'Mechanical Keyboard';
+
+Step 4: To fetch the data stored in DB
+```
+query {
+  products {
+    id
+    name
+    price
+  }
+}
+```
 
 Return to your browser; the Subscription in Tab 1 will have intercepted the database change and logged the new price.
